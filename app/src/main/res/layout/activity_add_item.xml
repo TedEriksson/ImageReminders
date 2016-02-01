@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:transitionName="toolbar"
+        android:translationZ="4dp"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            tools:background="@color/colorPrimary"
+            />
+    </FrameLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/blue"
+        android:layout_margin="16dp">
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:singleLine="true"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/blue"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="-32dp"
+        android:src="@drawable/ic_check_white_24dp"
+        android:transitionName="fab"
+        android:visibility="gone"
+        app:backgroundTint="@color/green"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/blue"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="-32dp"
+        android:src="@drawable/ic_add_white_24dp"
+        android:transitionName="fab"
+        />
+</RelativeLayout>

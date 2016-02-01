@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Image Reminders</string>
+
+    <string name="active">ACTIVE</string>
+    <string name="done">DONE</string>
+    <string name="description">Description</string>
+    <string name="error">Something went wrong, try again</string>
+    <string name="no_items_text">Nothing Here\nAdd an Item</string>
+</resources>
