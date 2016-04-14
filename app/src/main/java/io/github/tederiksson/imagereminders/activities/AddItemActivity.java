@@ -9,11 +9,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -25,6 +27,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -59,17 +62,16 @@ public class AddItemActivity extends AppCompatActivity {
     @Bind(R.id.save)
     FloatingActionButton save;
 
-    @Bind(R.id.picture)
-    FloatingActionButton floatingActionButton;
-
     @Bind(R.id.textWrapper)
     TextInputLayout textWrapper;
 
     @Bind(R.id.blue)
     View blue;
 
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+
     private File file = null;
-    private GestureDetectorCompat detectorCompat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +79,14 @@ public class AddItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item);
         ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
         // Intro Animations
-        floatingActionButton.postDelayed(() -> floatingActionButton.setImageDrawable(
-                getResources().getDrawable(R.drawable.ic_add_a_photo_white_24dp)), 150);
-        floatingActionButton.animate()
+        save.postDelayed(() -> save.setImageDrawable(
+                getResources().getDrawable(R.drawable.ic_check_white_24dp)), 150);
+        save.animate()
                 .setDuration(300)
                 .rotation(360);
         textWrapper.setTranslationY(100);
@@ -97,20 +103,17 @@ public class AddItemActivity extends AppCompatActivity {
                     .translationY(0)
                     .setInterpolator(new FastOutSlowInInterpolator());
         });
-
-        // For Fling to dismiss
-        detectorCompat = new GestureDetectorCompat(this, new FlingGestureListener());
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        detectorCompat.onTouchEvent(event);
-        return super.onTouchEvent(event);
     }
 
     @OnClick(R.id.save)
-    void clickSave() {
-        if (file == null && !TextUtils.isEmpty(description.getText())) {
+    void clickSave(View view) {
+        if (file == null) {
+            Snackbar.make(view, R.string.error_no_image, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(description.getText())) {
+            Snackbar.make(view, R.string.error_no_message, Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -146,7 +149,7 @@ public class AddItemActivity extends AppCompatActivity {
                 .translationY(-imageView.getHeight())
                 .setInterpolator(new FastOutSlowInInterpolator());
 
-        floatingActionButton.postDelayed(() -> floatingActionButton.setImageDrawable(
+        save.postDelayed(() -> save.setImageDrawable(
                 getResources().getDrawable(R.drawable.ic_add_white_24dp)), 150);
 
         textWrapper.animate()
@@ -154,7 +157,7 @@ public class AddItemActivity extends AppCompatActivity {
                 .alpha(0)
                 .setInterpolator(new AccelerateInterpolator());
 
-        floatingActionButton.animate()
+        save.animate()
                 .setDuration(300)
                 .rotation(0)
         .withEndAction(() -> ActivityCompat.finishAfterTransition(AddItemActivity.this));
@@ -189,20 +192,6 @@ public class AddItemActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 int density = (int) getResources().getDisplayMetrics().density;
 
-                floatingActionButton.animate()
-                        .setStartDelay(300)
-                        .setInterpolator(new AccelerateDecelerateInterpolator())
-                        .translationX(-floatingActionButton.getWidth() - (16 * density))
-                .withEndAction(() -> {
-                    save.setScaleX(0);
-                    save.setScaleY(0);
-                    save.setVisibility(View.VISIBLE);
-                    save.animate()
-                            .setInterpolator(new DecelerateInterpolator())
-                            .scaleX(1)
-                            .scaleY(1);
-                });
-
                 Glide.with(this).load(file).centerCrop().listener(new RequestListener<File, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, File model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -212,13 +201,14 @@ public class AddItemActivity extends AppCompatActivity {
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, File model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            int density = (int) getResources().getDisplayMetrics().density;
+                            int cy = imageView.getHeight() / 2;
+                            int cx = imageView.getWidth() / 2;
 
                             Animator animator = ViewAnimationUtils.createCircularReveal(
                                     imageView,
-                                    imageView.getWidth() - (36 * density),
-                                    imageView.getHeight(),
-                                    0, imageView.getWidth());
+                                    cx,
+                                    cy,
+                                    0, (float) Math.hypot(cx, cy));
                             animator.start();
                         }
                         return false;
@@ -245,18 +235,5 @@ public class AddItemActivity extends AppCompatActivity {
         file = image;
 
         return image;
-    }
-
-    class FlingGestureListener extends GestureDetector.SimpleOnGestureListener {
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            // Large Y Fling
-            if (Math.abs(velocityY) > 2000) {
-                onBackPressed();
-                return true;
-            }
-            return super.onFling(e1, e2, velocityX, velocityY);
-        }
     }
 }

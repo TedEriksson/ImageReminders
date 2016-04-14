@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -203,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements ImageItemsFragmen
 
             });
 
+            animSet.setStartDelay(200);
             animSet.start();
         });
     }
@@ -250,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements ImageItemsFragmen
                 }
             });
 
+            animSet.setStartDelay(0);
             animSet.start();
         });
     }

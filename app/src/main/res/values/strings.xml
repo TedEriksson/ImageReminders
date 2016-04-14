@@ -6,4 +6,6 @@
     <string name="description">Description</string>
     <string name="error">Something went wrong, try again</string>
     <string name="no_items_text">Nothing Here\nAdd an Item</string>
+    <string name="error_no_image">You must add an image before saving</string>
+    <string name="error_no_message">You must add a description before saving</string>
 </resources>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/blue"
@@ -12,16 +12,29 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:transitionName="toolbar"
-        android:translationZ="4dp"
+        android:translationZ="6dp"
         android:visibility="invisible">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            tools:background="@color/colorPrimary"
-            />
+            android:layout_height="256dp"
+            tools:background="@color/colorPrimary" />
+
+        <ImageButton
+            android:id="@+id/picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_add_a_photo_white_24dp" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
     </FrameLayout>
+
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textWrapper"
@@ -35,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Description"
-            android:singleLine="true"/>
+            android:singleLine="true" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -46,21 +59,6 @@
         android:layout_below="@+id/blue"
         android:layout_marginRight="16dp"
         android:layout_marginTop="-32dp"
-        android:src="@drawable/ic_check_white_24dp"
-        android:transitionName="fab"
-        android:visibility="gone"
-        app:backgroundTint="@color/green"
-        />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/blue"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="-32dp"
         android:src="@drawable/ic_add_white_24dp"
-        android:transitionName="fab"
-        />
+        android:transitionName="fab" />
 </RelativeLayout>
